@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My 2026 Personal Agile Sprint Board</title>
+<meta name="description" content="Personal Agile sprint board for Aakash's 2026 personal projects and life goals. Aligned with Aakash_Personal_Agile_Sprint_System_v2.md.">
+<meta name="robots" content="noindex, nofollow">
+<style>
+  :root{
+    --bg:#f3f4f6; --ink:#111827; --muted:#6b7280; --line:#e5e7eb;
+    --card:#ffffff; --epic:#f9fafb; --accent:#c73e1d;
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--font);color:var(--ink);background:var(--bg);font-size:14px;line-height:1.5}
+  header{background:#fff;border-bottom:1px solid var(--line);padding:16px 24px;position:sticky;top:0;z-index:20}
+  header h1{font-size:20px;font-weight:700;margin:0;display:flex;align-items:center;gap:10px}
+  header .subtitle{font-size:13px;color:var(--muted);margin-top:2px}
+  .sprint-goal{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:12px 16px;margin-top:12px;display:flex;align-items:center;gap:12px}
+  .sprint-goal .label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#c2410c;background:#ffedd5;padding:3px 8px;border-radius:999px}
+  .sprint-goal .text{font-size:14px;color:#7c2d12;font-weight:500}
+  .metrics{display:flex;gap:16px;margin-top:12px;flex-wrap:wrap}
+  .metric{background:#f9fafb;border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;color:#374151}
+  .legend{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;align-items:center}
+  .legend button{font-size:11px;color:#6b7280;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;transition:all .15s;font-family:inherit}
+  .legend button:hover{border-color:#9ca3af;background:#f9fafb}
+  .legend button.active{background:#111827;color:#fff;border-color:#111827}
+  .clear-btn{font-size:11px;color:#c73e1d;background:transparent;border:0;padding:5px 8px;cursor:pointer;font-weight:600}
+  .board{display:flex;gap:16px;padding:20px 24px 40px;overflow-x:auto;align-items:flex-start;min-height:calc(100vh - 210px)}
+  .column{min-width:300px;max-width:340px;flex:1;background:#f9fafb;border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;max-height:calc(100vh - 230px)}
+  .col-header{padding:14px 14px 10px;border-bottom:1px solid var(--line);background:#fff;border-radius:12px 12px 0 0}
+  .col-title{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .col-name{font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px}
+  .col-dot{width:10px;height:10px;border-radius:50%}
+  .count{background:#e5e7eb;color:#374151;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px}
+  .wip{font-size:11px;color:var(--muted);margin-top:4px}
+  .policy{font-size:11px;color:#6b7280;margin-top:6px;line-height:1.45}
+  .col-body{padding:12px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px}
+  .epic-group{background:var(--epic);border:1px solid var(--line);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:8px}
+  .epic-header{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;color:#374151;padding:2px 4px}
+  .epic-icon{font-size:16px}
+  .epic-code{margin-left:auto;font-size:10px;color:#9ca3af;font-weight:600;background:#fff;border:1px solid var(--line);padding:2px 6px;border-radius:4px}
+  .epic-bar{height:3px;border-radius:2px;background:var(--line);margin-top:4px;overflow:hidden}
+  .epic-progress{height:100%;border-radius:2px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:box-shadow .15s;cursor:grab;margin-left:8px}
+  .card:hover{box-shadow:0 4px 12px rgba(0,0,0,.08)}
+  .card-featured{border-left:4px solid #c73e1d;background:linear-gradient(to right,#fff8f5,#fff)}
+  .card-top{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:6px;flex-wrap:wrap}
+  .ticket{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10px;font-weight:700;color:#6b7280;background:#f3f4f6;border:1px solid var(--line);padding:2px 6px;border-radius:4px}
+  .itype{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em}
+  .card-title{font-weight:600;font-size:13px;color:#111827;margin:0 0 5px;line-height:1.35}
+  .card-desc{font-size:11px;color:#4b5563;margin:0 0 8px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .habit-track{display:flex;align-items:center;gap:6px;margin:8px 0;font-size:11px;color:#4b5563}
+  .habit-track .boxes{display:flex;gap:3px}
+  .habit-track .box{width:14px;height:14px;border-radius:3px;background:#e5e7eb;border:1px solid #d1d5db}
+  .habit-track .box.done{background:#10b981;border-color:#059669}
+  .tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+  .tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:999px}
+  .meta{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .meta-left{display:flex;align-items:center;gap:8px}
+  .priority{font-size:9px;font-weight:700;padding:2px 7px;border-radius:999px;text-transform:uppercase;letter-spacing:.04em}
+  .points{display:flex;align-items:center;gap:3px;font-size:10px;color:#6b7280;background:#f3f4f6;border:1px solid var(--line);padding:2px 6px;border-radius:5px}
+  .date{font-size:10px;color:#6b7280;display:flex;align-items:center;gap:3px}
+  .avatar{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#c73e1d,#e8a87c);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .footer{border-top:1px solid var(--line);padding:12px 24px;background:#fff;color:#6b7280;font-size:12px}
+  .footer a{color:var(--accent);text-decoration:none}
+  .empty-state{text-align:center;color:#9ca3af;font-size:12px;padding:20px 10px}
+  /* column dot colors */
+  .dot-backlog{background:#9ca3af}
+  .dot-ready{background:#3b82f6}
+  .dot-progress{background:#f59e0b}
+  .dot-blocked{background:#ef4444}
+  .dot-review{background:#8b5cf6}
+  .dot-done{background:#10b981}
+  /* priority colors */
+  .p-high{background:#fee2e2;color:#991b1b}
+  .p-medium{background:#fef3c7;color:#92400e}
+  .p-low{background:#dbeafe;color:#1e40af}
+  .p-none{background:#f3f4f6;color:#374151}
+  /* item type colors */
+  .i-epic{background:#fce7f3;color:#9d174d}
+  .i-project{background:#e0e7ff;color:#3730a3}
+  .i-story{background:#dcfce7;color:#166534}
+  .i-task{background:#f3f4f6;color:#374151}
+  .i-habit{background:#e0f2fe;color:#0369a1}
+  .i-decision{background:#fef3c7;color:#92400e}
+  .i-research{background:#f3e8ff;color:#6b21a8}
+  .i-idea{background:#ecfdf5;color:#065f46}
+  /* tag colors */
+  .t-sec{background:#fee2e2;color:#991b1b}
+  .t-ai{background:#e0e7ff;color:#3730a3}
+  .t-exp{background:#dcfce7;color:#166534}
+  .t-wealth{background:#fef9c3;color:#854d0e}
+  .t-career{background:#ffedd5;color:#9a3412}
+  .t-create{background:#fce7f3;color:#9d174d}
+  .t-fitness{background:#d1fae5;color:#065f46}
+  .t-life{background:#e0f2fe;color:#0369a1}
+  /* epic progress colors */
+  .pg-sec{background:#991b1b}
+  .pg-ai{background:#3730a3}
+  .pg-exp{background:#c73e1d}
+  .pg-wealth{background:#eab308}
+  .pg-career{background:#f59e0b}
+  .pg-create{background:#ec4899}
+  .pg-fitness{background:#10b981}
+  .pg-life{background:#0ea5e9}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>
+    <span style="font-size:22px">🎯</span>
+    My 2026 Personal Agile Sprint Board
+  </h1>
+  <div class="subtitle">Aligned with <code>Aakash_Personal_Agile_Sprint_System_v2.md</code> · 8 workstreams · 2-week sprints · max 3 active projects.</div>
+
+  <div class="sprint-goal">
+    <span class="label">Sprint Goal</span>
+    <span class="text">Ship one small Embedded Security or AI project publicly while keeping Japan, fitness, and creative momentum alive.</span>
+  </div>
+
+  <div class="metrics">
+    <span class="metric">8 Workstreams</span>
+    <span class="metric">30 items</span>
+    <span class="metric">In Progress: 10</span>
+    <span class="metric">Blocked: 5</span>
+    <span class="metric">Sprint capacity: 26 pts + habits</span>
+    <span class="metric">WIP limit: 3 active projects</span>
+    <span class="metric">Owner: AK</span>
+  </div>
+
+  <div class="legend" id="epicFilters">
+    <button data-epic="sec" type="button">🛡️ Security</button>
+    <button data-epic="ai" type="button">🤖 AI</button>
+    <button data-epic="exp" type="button">🇯🇵 Experiences</button>
+    <button data-epic="wealth" type="button">💰 Wealth</button>
+    <button data-epic="career" type="button">🚀 Career</button>
+    <button data-epic="create" type="button">🎨 Create</button>
+    <button data-epic="fitness" type="button">🏋️ Fitness</button>
+    <button data-epic="life" type="button">🌱 Life</button>
+    <button class="clear-btn" id="clearFilters" type="button">Clear filters</button>
+  </div>
+</header>
+
+<main class="board">
+
+  <!-- BACKLOG -->
+  <section class="column">
+    <div class="col-header">
+      <div class="col-title">
+        <div class="col-name"><span class="col-dot dot-backlog"></span> Backlog</div>
+        <span class="count">6</span>
+      </div>
+      <div class="wip">Everything I might do · not a commitment</div>
+      <div class="policy">Refine before sprint planning. Break 13-point items. Ideas live here until prioritized.</div>
+    </div>
+    <div class="col-body">
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🛡️</span> Embedded Security <span class="epic-code">SEC</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-sec" style="width:5%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">SEC-005</span><span class="itype i-idea">Idea</span></div>
+          <h3 class="card-title">PQC for embedded primer</h3>
+          <p class="card-desc">Short write-up or example on post-quantum crypto considerations for resource-constrained targets.</p>
+          <div class="tags"><span class="tag t-sec">PQC</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-low">Low</span><span class="points">⚡ 3</span></div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🤖</span> AI / Automation <span class="epic-code">AI</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-ai" style="width:5%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">AI-004</span><span class="itype i-idea">Idea</span></div>
+          <h3 class="card-title">Local RAG over security docs</h3>
+          <p class="card-desc">Index wolfSSL/TI docs locally and query with a small LLM for quick reference.</p>
+          <div class="tags"><span class="tag t-ai">RAG</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-low">Low</span><span class="points">⚡ 5</span></div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🇯🇵</span> Experiences <span class="epic-code">EXP</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-exp" style="width:10%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">EXP-005</span><span class="itype i-idea">Idea</span></div>
+          <h3 class="card-title">Future travel projects</h3>
+          <p class="card-desc">Post-Japan destinations and experiences. Undefined for 2026.</p>
+          <div class="tags"><span class="tag t-exp">Travel</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-low">Low</span></div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">💰</span> Wealth <span class="epic-code">WLT</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-wealth" style="width:10%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">WLT-004</span><span class="itype i-idea">Idea</span></div>
+          <h3 class="card-title">Review FD strategy</h3>
+          <p class="card-desc">Evaluate fixed deposit allocation vs other liquid instruments.</p>
+          <div class="tags"><span class="tag t-wealth">Finance</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-low">Low</span><span class="points">⚡ 2</span></div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🌱</span> Life <span class="epic-code">LFE</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-life" style="width:5%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">LFE-005</span><span class="itype i-decision">Decision</span></div>
+          <h3 class="card-title">Get a dog</h3>
+          <p class="card-desc">Long-term personal goal. Household decision / agreement still required.</p>
+          <div class="tags"><span class="tag t-life">Personal</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-low">Low</span></div><div class="avatar">AK</div></div>
+        </article>
+        <article class="card">
+          <div class="card-top"><span class="ticket">LFE-006</span><span class="itype i-decision">Decision</span></div>
+          <h3 class="card-title">Apple Watch upgrade</h3>
+          <p class="card-desc">Series 10 or 11, preference around 44 mm. Future purchase decision.</p>
+          <div class="tags"><span class="tag t-life">Tech</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-low">Low</span></div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- READY -->
+  <section class="column">
+    <div class="col-header">
+      <div class="col-title">
+        <div class="col-name"><span class="col-dot dot-ready"></span> Ready</div>
+        <span class="count">5</span>
+      </div>
+      <div class="wip">Refined · estimated · can enter next sprint</div>
+      <div class="policy">Items here are clear enough to start. Pull during sprint planning.</div>
+    </div>
+    <div class="col-body">
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🛡️</span> Embedded Security <span class="epic-code">SEC</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-sec" style="width:20%"></div></div>
+        <article class="card card-featured">
+          <div class="card-top"><span class="ticket">SEC-001</span><span class="itype i-project">Project</span></div>
+          <h3 class="card-title">AM26xx wolfSSL example port</h3>
+          <p class="card-desc">Port or document a wolfSSL TLS/DTLS example for TI AM26x LaunchPad. Public repo + README.</p>
+          <div class="tags"><span class="tag t-sec">wolfSSL</span><span class="tag t-sec">TI</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-high">High</span><span class="points">⚡ 8</span></div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🤖</span> AI / Automation <span class="epic-code">AI</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-ai" style="width:15%"></div></div>
+        <article class="card card-featured">
+          <div class="card-top"><span class="ticket">AI-001</span><span class="itype i-project">Project</span></div>
+          <h3 class="card-title">Personal MCP server</h3>
+          <p class="card-desc">Build one Model Context Protocol server that gives Claude/Obsidian access to my notes or calendar.</p>
+          <div class="tags"><span class="tag t-ai">MCP</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-high">High</span><span class="points">⚡ 5</span></div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🎨</span> Create <span class="epic-code">CRT</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-create" style="width:25%"></div></div>
+        <article class="card card-featured">
+          <div class="card-top"><span class="ticket">CRT-001</span><span class="itype i-project">Project</span></div>
+          <h3 class="card-title">India 2100 — game design document</h3>
+          <p class="card-desc">Define core loop, victory conditions, faction asymmetry, resource economy, and turn structure for board + PC versions.</p>
+          <div class="tags"><span class="tag t-create">Game</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-high">High</span><span class="points">⚡ 5</span></div><div class="avatar">AK</div></div>
+        </article>
+        <article class="card card-featured">
+          <div class="card-top"><span class="ticket">CRT-002</span><span class="itype i-story">Story</span></div>
+          <h3 class="card-title">Prototype India 2100 paper version</h3>
+          <p class="card-desc">Build a playable cardboard prototype with cards, tokens, and a simple map. Test solo and with Shreya.</p>
+          <div class="tags"><span class="tag t-create">Prototype</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-high">High</span><span class="points">⚡ 5</span></div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🇯🇵</span> Experiences <span class="epic-code">EXP</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-exp" style="width:25%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">EXP-006</span><span class="itype i-task">Task</span></div>
+          <h3 class="card-title">Create Japan packing list</h3>
+          <p class="card-desc">Weather-appropriate clothing, tech, documents, meds, and travel outfits.</p>
+          <div class="tags"><span class="tag t-exp">Travel</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-medium">Medium</span><span class="points">⚡ 2</span></div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- IN PROGRESS -->
+  <section class="column">
+    <div class="col-header">
+      <div class="col-title">
+        <div class="col-name"><span class="col-dot dot-progress"></span> In Progress</div>
+        <span class="count">10</span>
+      </div>
+      <div class="wip">Max 3 active projects · habits run in parallel</div>
+      <div class="policy">Current committed work. Finish, pause, or move to Blocked before starting new projects.</div>
+    </div>
+    <div class="col-body">
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🇯🇵</span> Experiences <span class="epic-code">EXP</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-exp" style="width:70%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">EXP-001</span><span class="itype i-epic">Epic</span></div>
+          <h3 class="card-title">Japan Trip 2026 — Oct 9-24</h3>
+          <p class="card-desc">Tokyo, Fuji, Kyoto, Osaka. Remaining: bookings, Shinkansen, local rail, airport transfers, itinerary finalization.</p>
+          <div class="tags"><span class="tag t-exp">Travel</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-high">High</span><span class="points">⚡ 13</span></div><div class="date">📅 Oct 9-24</div><div class="avatar">AK</div></div>
+        </article>
+        <article class="card">
+          <div class="card-top"><span class="ticket">EXP-002</span><span class="itype i-habit">Habit</span></div>
+          <h3 class="card-title">Japanese Language Learning</h3>
+          <p class="card-desc">Travel-useful vocabulary and phrases. 6-week daily plan.</p>
+          <div class="habit-track"><span>Target:</span><div class="boxes"><div class="box done"></div><div class="box done"></div><div class="box done"></div><div class="box done"></div><div class="box"></div><div class="box"></div><div class="box"></div></div><span>4/7 this week</span></div>
+          <div class="tags"><span class="tag t-exp">Language</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-medium">Medium</span></div><div class="date">📅 Daily</div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">💰</span> Wealth <span class="epic-code">WLT</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-wealth" style="width:55%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">WLT-001</span><span class="itype i-habit">Habit</span></div>
+          <h3 class="card-title">Monthly portfolio review</h3>
+          <p class="card-desc">Review MF allocation, direct stocks, gold/SGB/silver, cash, drift from target allocation.</p>
+          <div class="tags"><span class="tag t-wealth">Finance</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-high">High</span></div><div class="date">📅 Monthly</div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🏋️</span> Fitness <span class="epic-code">FIT</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-fitness" style="width:60%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">FIT-001</span><span class="itype i-habit">Habit</span></div>
+          <h3 class="card-title">5-day gym bro split</h3>
+          <p class="card-desc">Legs, chest, back, shoulders+abs, arms. Progressive overload and consistency.</p>
+          <div class="habit-track"><span>Target:</span><div class="boxes"><div class="box done"></div><div class="box done"></div><div class="box"></div><div class="box"></div><div class="box"></div></div><span>2/5 this week</span></div>
+          <div class="tags"><span class="tag t-fitness">Gym</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-high">High</span></div><div class="date">📅 Weekly</div><div class="avatar">AK</div></div>
+        </article>
+        <article class="card">
+          <div class="card-top"><span class="ticket">FIT-002</span><span class="itype i-habit">Habit</span></div>
+          <h3 class="card-title">Swim / Table Tennis / Pickleball</h3>
+          <p class="card-desc">Alternate cardio and social sports weekly. Aim for at least one session each.</p>
+          <div class="tags"><span class="tag t-fitness">Cardio</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-medium">Medium</span></div><div class="date">📅 Weekly</div><div class="avatar">AK</div></div>
+        </article>
+        <article class="card">
+          <div class="card-top"><span class="ticket">FIT-003</span><span class="itype i-habit">Habit</span></div>
+          <h3 class="card-title">10k daily steps</h3>
+          <p class="card-desc">Walk after meals, weekend long walks, mindful NEAT target.</p>
+          <div class="tags"><span class="tag t-fitness">Steps</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-medium">Medium</span></div><div class="date">📅 Daily</div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🎨</span> Create <span class="epic-code">CRT</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-create" style="width:50%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">CRT-003</span><span class="itype i-project">Project</span></div>
+          <h3 class="card-title">YouTube / Travel Content</h3>
+          <p class="card-desc">Oman/Abu Dhabi, Andaman, Singapore, Japan vlogs. Edit long-form + short-form reels.</p>
+          <div class="tags"><span class="tag t-create">Create</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-medium">Medium</span><span class="points">⚡ 8</span></div><div class="date">📅 2026</div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🚀</span> Career <span class="epic-code">CAR</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-career" style="width:35%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">CAR-002</span><span class="itype i-habit">Habit</span></div>
+          <h3 class="card-title">Technical writing / sharing</h3>
+          <p class="card-desc">One public note or post per sprint on LinkedIn, blog, or GitHub. Build visibility.</p>
+          <div class="tags"><span class="tag t-career">Brand</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-medium">Medium</span></div><div class="date">📅 Bi-weekly</div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🌱</span> Life <span class="epic-code">LFE</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-life" style="width:45%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">LFE-001</span><span class="itype i-habit">Habit</span></div>
+          <h3 class="card-title">Digital wellbeing routine</h3>
+          <p class="card-desc">Reduce reels/screen exposure, consistent morning routine, work-life separation.</p>
+          <div class="tags"><span class="tag t-life">Habits</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-medium">Medium</span></div><div class="date">📅 Daily</div><div class="avatar">AK</div></div>
+        </article>
+        <article class="card">
+          <div class="card-top"><span class="ticket">LFE-002</span><span class="itype i-habit">Habit</span></div>
+          <h3 class="card-title">Gardening</h3>
+          <p class="card-desc">Maintain balcony plants, improve balcony aesthetics.</p>
+          <div class="tags"><span class="tag t-life">Hobby</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-low">Low</span></div><div class="date">📅 Weekly</div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- BLOCKED / WAITING -->
+  <section class="column">
+    <div class="col-header">
+      <div class="col-title">
+        <div class="col-name"><span class="col-dot dot-blocked"></span> Blocked / Waiting</div>
+        <span class="count">5</span>
+      </div>
+      <div class="wip">Needs research, decision, or external input</div>
+      <div class="policy">Every blocked item needs an unblock date or decision deadline. Research must have an exit condition.</div>
+    </div>
+    <div class="col-body">
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🤖</span> AI / Automation <span class="epic-code">AI</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-ai" style="width:20%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">AI-002</span><span class="itype i-decision">Decision</span></div>
+          <h3 class="card-title">LLM stack for local agents</h3>
+          <p class="card-desc">Pick Ollama + llama3 vs GPT-4o API vs hybrid. Decide by end of sprint.</p>
+          <div class="tags"><span class="tag t-ai">Stack</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-medium">Medium</span><span class="points">⚡ 2</span></div><div class="date">📅 This sprint</div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">💰</span> Wealth <span class="epic-code">WLT</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-wealth" style="width:40%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">WLT-002</span><span class="itype i-decision">Decision</span></div>
+          <h3 class="card-title">Flat / Property Purchase</h3>
+          <p class="card-desc">Apartment purchase evaluation — size, pricing, financing terms, trade-offs.</p>
+          <div class="tags"><span class="tag t-wealth">Property</span><span class="tag t-wealth">Finance</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-high">High</span><span class="points">⚡ 8</span></div><div class="date">📅 Q2-Q3</div><div class="avatar">AK</div></div>
+        </article>
+        <article class="card">
+          <div class="card-top"><span class="ticket">WLT-003</span><span class="itype i-decision">Decision</span></div>
+          <h3 class="card-title">Deploy additional cash</h3>
+          <p class="card-desc">Evaluate liquidity, upcoming expenses, and allocation before deploying excess capital.</p>
+          <div class="tags"><span class="tag t-wealth">Finance</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-medium">Medium</span><span class="points">⚡ 3</span></div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🌱</span> Life <span class="epic-code">LFE</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-life" style="width:30%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">LFE-004</span><span class="itype i-decision">Decision</span></div>
+          <h3 class="card-title">Phone Upgrade</h3>
+          <p class="card-desc">Improve camera, battery, meaningful multi-year upgrade. iPhone vs Samsung vs family strategy.</p>
+          <div class="tags"><span class="tag t-life">Tech</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-medium">Medium</span><span class="points">⚡ 2</span></div><div class="date">📅 Before Oct</div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🚀</span> Career <span class="epic-code">CAR</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-career" style="width:25%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">CAR-001</span><span class="itype i-project">Project</span></div>
+          <h3 class="card-title">Resume / LinkedIn / GitHub refresh</h3>
+          <p class="card-desc">Strong two-page resume, updated LinkedIn positioning, showcase hobby + technical projects on GitHub.</p>
+          <div class="tags"><span class="tag t-career">Career</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-medium">Medium</span><span class="points">⚡ 5</span></div><div class="date">📅 Q2</div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- REVIEW -->
+  <section class="column">
+    <div class="col-header">
+      <div class="col-title">
+        <div class="col-name"><span class="col-dot dot-review"></span> Review</div>
+        <span class="count">4</span>
+      </div>
+      <div class="wip">Validate, gather feedback, polish</div>
+      <div class="policy">Creative and technical work moves here when ready for review. Set a review deadline so it doesn't stall.</div>
+    </div>
+    <div class="col-body">
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🛡️</span> Embedded Security <span class="epic-code">SEC</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-sec" style="width:80%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">SEC-002</span><span class="itype i-story">Story</span></div>
+          <h3 class="card-title">wolfSSL AM26xx build notes</h3>
+          <p class="card-desc">Document compiler flags, CCS project setup, and first successful build. Ready for peer review.</p>
+          <div class="tags"><span class="tag t-sec">Docs</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-medium">Medium</span><span class="points">⚡ 3</span></div><div class="date">📅 This sprint</div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🤖</span> AI / Automation <span class="epic-code">AI</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-ai" style="width:75%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">AI-003</span><span class="itype i-project">Project</span></div>
+          <h3 class="card-title">Embedded Security AI expert prompt</h3>
+          <p class="card-desc">Curated system prompt + context cards for debugging embedded TLS/PQC issues with an LLM.</p>
+          <div class="tags"><span class="tag t-ai">Prompt</span><span class="tag t-sec">Security</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-medium">Medium</span><span class="points">⚡ 3</span></div><div class="date">📅 This sprint</div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-icon">🎨</span> Create <span class="epic-code">CRT</span></div>
+        <div class="epic-bar"><div class="epic-progress pg-create" style="width:70%"></div></div>
+        <article class="card">
+          <div class="card-top"><span class="ticket">CRT-004</span><span class="itype i-project">Project</span></div>
+          <h3 class="card-title">Oman / Abu Dhabi vlog rough cut</h3>
+          <p class="card-desc">First pass of the recent travel film. Awaiting color, sound, and final cut decisions.</p>
+          <div class="tags"><span class="tag t-create">Video</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-medium">Medium</span><span class="points">⚡ 5</span></div><div class="date">📅 Post trip</div><div class="avatar">AK</div></div>
+        </article>
+        <article class="card">
+          <div class="card-top"><span class="ticket">CRT-005</span><span class="itype i-task">Task</span></div>
+          <h3 class="card-title">Monthly sketches + journal spread</h3>
+          <p class="card-desc">Review this month's sketches and journal pages. Decide which to digitize or share.</p>
+          <div class="tags"><span class="tag t-create">Art</span></div>
+          <div class="meta"><div class="meta-left"><span class="priority p-low">Low</span><span class="points">⚡ 2</span></div><div class="date">📅 Monthly</div><div class="avatar">AK</div></div>
+        </article>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DONE -->
+  <section class="column">
+    <div class="col-header">
+      <div class="col-title">
+        <div class="col-name"><span class="col-dot dot-done"></span> Done</div>
+        <span class="count">0</span>
+      </div>
+      <div class="wip">Completed this sprint</div>
+      <div class="policy">Celebrate wins. Use in sprint review and velocity calculation.</div>
+    </div>
+    <div class="col-body">
+      <div class="empty-state">
+        <div style="font-size:24px;margin-bottom:8px">🏁</div>
+        <div>No items completed this sprint yet.</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  Aligned with <code>Aakash_Personal_Agile_Sprint_System_v2.md</code>.
+  8 workstreams · 6 sprint columns · Fibonacci story points · habits tracked separately.
+  Layout inspired by the <a href="../agila">Agila</a> kanban board.
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var LS_KEY = "agileDashboardFilters.v3";
+  var filters = document.querySelectorAll("#epicFilters button[data-epic]");
+  var clearBtn = document.getElementById("clearFilters");
+  var active = [];
+
+  function getEpic(group){
+    var bar = group.querySelector(".epic-progress");
+    if (!bar) return "";
+    var m = bar.className.match(/pg-([a-z]+)/);
+    return m ? m[1] : "";
+  }
+
+  function updateCounts(){
+    document.querySelectorAll(".column").forEach(function(col){
+      var visible = 0;
+      col.querySelectorAll(".card").forEach(function(card){
+        if (card.offsetParent !== null) visible++;
+      });
+      var countEl = col.querySelector(".count");
+      if (countEl) countEl.textContent = visible;
+    });
+  }
+
+  function apply(){
+    document.querySelectorAll(".epic-group").forEach(function(group){
+      var epic = getEpic(group);
+      var show = active.length === 0 || active.indexOf(epic) !== -1;
+      group.style.display = show ? "" : "none";
+    });
+    filters.forEach(function(btn){
+      btn.classList.toggle("active", active.indexOf(btn.dataset.epic) !== -1);
+    });
+    updateCounts();
+    try { localStorage.setItem(LS_KEY, JSON.stringify(active)); } catch(e){}
+  }
+
+  filters.forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var e = btn.dataset.epic;
+      var idx = active.indexOf(e);
+      if (idx === -1) active.push(e); else active.splice(idx, 1);
+      apply();
+    });
+  });
+
+  clearBtn.addEventListener("click", function(){
+    active = [];
+    apply();
+  });
+
+  try {
+    var saved = localStorage.getItem(LS_KEY);
+    if (saved) active = JSON.parse(saved);
+  } catch(e){ active = []; }
+
+  apply();
+})();
+</script>
+
+</body>
+</html>
